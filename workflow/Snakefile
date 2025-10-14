@@ -1,0 +1,43 @@
+# check working example at 20250107 on git
+from snakemake.utils import min_version
+min_version("8.0")
+import pandas as pd
+
+configfile: "config/config.yaml"
+
+# input data
+samples = pd.read_csv(config["sample_metadata"])["study_index"].tolist()
+
+report: "report/workflow.rst"
+
+rule all:
+    input:
+        expand("results/plot/{sample}.png", sample=samples)
+
+rule dwn_sif:
+    output: "workflow/envs/singularity.sif"
+    shell:
+        """
+        wget "https://heibox.uni-heidelberg.de/f/1f548c7f931c497682fc/?dl=1" -O {output}
+        """
+
+rule generate_data:
+    input: img="workflow/envs/singularity.sif"
+    params: seed=config["generate_data"]["seed"]
+    output: output="data/{sample}.csv"
+    container: "workflow/envs/singularity.sif"
+    script: "scripts/generate_data.R"
+
+rule wrangle:
+    input: input="data/{sample}.csv", img="workflow/envs/singularity.sif"
+    params: nrow=config["wrangle"]["nrow"]
+    output: output="results/wrangled/{sample}.csv"
+    container: "workflow/envs/singularity.sif"
+    script: "scripts/wrangle.R" 
+
+rule plot:
+    input: input="results/wrangled/{sample}.csv", img="workflow/envs/singularity.sif"
+    params: color=config["plot"]["color"]
+    output: output=report("results/plot/{sample}.png") 
+    container: "workflow/envs/singularity.sif"
+    script: "scripts/plot.R" 

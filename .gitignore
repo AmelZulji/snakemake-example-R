@@ -47,3 +47,10 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+.snakemake/
+
+results/
+data/
+workflow/envs/*.sif
+report.html
