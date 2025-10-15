@@ -14,30 +14,7 @@ rule all:
     input:
         expand("results/plot/{sample}.png", sample=samples)
 
-rule dwn_sif:
-    output: "workflow/envs/singularity.sif"
-    shell:
-        """
-        wget "https://heibox.uni-heidelberg.de/f/1f548c7f931c497682fc/?dl=1" -O {output}
-        """
-
-rule generate_data:
-    input: img="workflow/envs/singularity.sif"
-    params: seed=config["generate_data"]["seed"]
-    output: output="data/{sample}.csv"
-    container: "workflow/envs/singularity.sif"
-    script: "scripts/generate_data.R"
-
-rule wrangle:
-    input: input="data/{sample}.csv", img="workflow/envs/singularity.sif"
-    params: nrow=config["wrangle"]["nrow"]
-    output: output="results/wrangled/{sample}.csv"
-    container: "workflow/envs/singularity.sif"
-    script: "scripts/wrangle.R" 
-
-rule plot:
-    input: input="results/wrangled/{sample}.csv", img="workflow/envs/singularity.sif"
-    params: color=config["plot"]["color"]
-    output: output=report("results/plot/{sample}.png") 
-    container: "workflow/envs/singularity.sif"
-    script: "scripts/plot.R" 
+include: "rules/dwn_sif.smk"
+include: "rules/generate_data.smk"
+include: "rules/plot.smk"
+include: "rules/wrangle.smk"
