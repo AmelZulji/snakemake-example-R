@@ -7,7 +7,7 @@ Example workflow orchestrating simple R scripts with following features:
 The workflow can be deployed as follows
 
 ```
-snakedeploy deploy-workflow https://github.com/AmelZulji/snakemake-example-R.git . --branch
+snakedeploy deploy-workflow https://github.com/AmelZulji/snakemake-example-R.git . --branch main
 ```
 
 > [!NOTE]
