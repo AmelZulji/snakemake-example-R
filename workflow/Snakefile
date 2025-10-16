@@ -4,6 +4,7 @@ min_version("8.0")
 import pandas as pd
 
 configfile: "config/config.yaml"
+container: "docker://rocker/tidyverse:4.5.1"
 
 # input data
 samples = pd.read_csv(config["sample_metadata"])["study_index"].tolist()
@@ -14,7 +15,7 @@ rule all:
     input:
         expand("results/plot/{sample}.png", sample=samples)
 
-include: "rules/dwn_sif.smk"
+# include: "rules/dwn_sif.smk"
 include: "rules/generate_data.smk"
 include: "rules/plot.smk"
 include: "rules/wrangle.smk"
