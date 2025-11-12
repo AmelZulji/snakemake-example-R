@@ -15,7 +15,6 @@ rule all:
     input:
         expand("results/plot/{sample}.png", sample=samples)
 
-# include: "rules/dwn_sif.smk"
 include: "rules/generate_data.smk"
 include: "rules/plot.smk"
 include: "rules/wrangle.smk"
