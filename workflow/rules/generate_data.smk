@@ -1,4 +1,4 @@
 rule generate_data:
-    params: seed=config["generate_data"]["seed"]
-    output: output="data/{sample}.csv"
-    script: "../scripts/generate_data.R"
+	params: n = config["generate_data"]["n"]
+	output: out1 = "data/{sample}.csv"
+	script: "../scripts/generate_data.R"

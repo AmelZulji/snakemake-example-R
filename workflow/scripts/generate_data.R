@@ -1,9 +1,14 @@
-library(tidyverse)
+if (interactive()) {
+  snakemake <- create_snakemake_object(
+  output = list(out1 = "data/sti_1.csv"),
+  params = list(n = 10000)
+  )
+}
 
-set.seed(snakemake@params[["seed"]])
-sz <- parse_number(snakemake@wildcards[["sample"]])
 
-df <- tibble(value = seq_len(sz))
+library(tibble, quietly = TRUE)
+library(readr, quietly = TRUE)
 
-write_csv(x = df, file = snakemake@output[["output"]])
+df <- tibble(var1 = rnorm(snakemake@params$n), var2 = rnorm(snakemake@params$n))
+write_csv(x = df, file = snakemake@output[["out1"]])
 
