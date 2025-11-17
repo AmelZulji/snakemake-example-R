@@ -9,6 +9,8 @@ if (interactive()) {
 library(tibble, quietly = TRUE)
 library(readr, quietly = TRUE)
 
-df <- tibble(var1 = rnorm(snakemake@params$n), var2 = rnorm(snakemake@params$n))
+sti <- basename(snakemake@output$out1) |> tools::file_path_sans_ext()
+
+df <- tibble(study_index = sti, var1 = rnorm(snakemake@params$n), var2 = rnorm(snakemake@params$n))
 write_csv(x = df, file = snakemake@output[["out1"]])
 

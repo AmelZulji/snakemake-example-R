@@ -9,6 +9,6 @@ if (interactive()) {
 library(readr)
 library(ggplot2)
 
-df <- read_csv(snakemake@input[["in1"]])
+df <- read_csv(snakemake@input[["in1"]], show_col_types = FALSE)
 p <- df |> ggplot(aes(x = var1)) + geom_histogram(color = snakemake@params$bar_col, bins = snakemake@params$nbins,fill = snakemake@params$bar_fill)
 ggsave(filename = snakemake@output[["out1"]], plot = p, width = 3, height = 3)

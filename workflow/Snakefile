@@ -13,7 +13,9 @@ report: "report/workflow.rst"
 
 rule all:
     input:
+        expand("results/histogram/{sample}.png", sample=samples),
         expand("results/violin_plot/{sample}.png", sample=samples)
+        
 
 include: "rules/generate_data.smk"
 include: "rules/histogram.smk"
